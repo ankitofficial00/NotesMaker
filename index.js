@@ -37,6 +37,22 @@ app.get("/file/:filename", (req, res) => {
     res.render("show", { filename: req.params.filename, details: data });
   });
 });
+
+app.get("/edit/:filename", (req, res) => {
+  res.render("edit", { filename: req.params.filename });
+});
+
+app.post("/edit", (req, res) => {
+  console.log(req.body);
+  fs.rename(
+    `./files/${req.body.previous}`,
+    `./files/${req.body.new}`,
+    (err) => {
+      if (err) throw err;
+      res.redirect("/");
+    }
+  );
+});
 app.listen(8000, (req, res) => {
   console.log("server is running");
 });
