@@ -12,6 +12,7 @@ app.set("view engine", "ejs");
 // Routes
 
 app.get("/", (req, res) => {
+  console.log(req.body.title);
   fs.readdir(`./files`, function (err, files) {
     if (err) throw err;
     console.log(files);
@@ -30,6 +31,12 @@ app.post("/create", (req, res) => {
   );
 });
 
+app.get("/file/:filename", (req, res) => {
+  fs.readFile(`./files/${req.params.filename}`, "utf-8", function (err, data) {
+    console.log(data);
+    res.render("show", { filename: req.params.filename, details: data });
+  });
+});
 app.listen(8000, (req, res) => {
   console.log("server is running");
 });
