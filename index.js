@@ -53,6 +53,26 @@ app.post("/edit", (req, res) => {
     }
   );
 });
+
+app.get("/update/details/:filename", (req, res) => {
+  fs.readFile(`./files/${req.params.filename}`, "utf-8", (err, data) => {
+    if (err) throw err;
+    res.render("update", { details: data, filename: req.params.filename });
+  });
+});
+
+app.post("/update/:filename", (req, res) => {
+  console.log(req.body);
+  fs.writeFile(
+    `./files/${req.params.filename}`,
+    req.body.newData,
+    function (err) {
+      if (err) throw err;
+      res.redirect(`/file/${req.params.filename}`);
+    }
+  );
+});
+
 app.listen(8000, (req, res) => {
   console.log("server is running");
 });
